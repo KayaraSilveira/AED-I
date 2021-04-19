@@ -4,12 +4,11 @@
 
 typedef struct {
 
-    int i, j, escolha;
-    unsigned int nCount; 
-    Nodo *pFirst;
-    Nodo *pLast;
+    char nome[30];
+    int idade;
+    char telefone[15];
 
-}Variavel;  //variaveis e sentinela
+}Pessoa; //info
 
 typedef struct {
 
@@ -21,11 +20,14 @@ typedef struct {
 
 typedef struct {
 
-    char nome[30];
-    int idade;
-    char telefone[15];
+    int i, j, escolha;
+    unsigned int nCount; 
+    Nodo *pFirst;
+    Nodo *pLast;
 
-}Pessoa; //info
+}Variavel;  //variaveis e sentinela
+
+
 
 void *incluir (Variavel *pBuffer);
 void *apagar (Variavel *pBuffer);
@@ -39,6 +41,7 @@ int main () {
     pBuffer = malloc(sizeof(Variavel));
     pBuffer->pFirst = NULL;
     pBuffer->pLast = NULL;
+    pBuffer->nCount = 0;
 
     do{
        
@@ -48,10 +51,10 @@ int main () {
         
         switch(pBuffer->escolha){
             case 1: 
-                pBuffer = incluir(pBuffer);
+                incluir(pBuffer);
                 break;
            case 2:
-                pBuffer = apagar(pBuffer);
+                apagar(pBuffer);
                 break;
             case 3:
                 buscar(pBuffer);
@@ -74,13 +77,14 @@ void *incluir (Variavel *pBuffer) {
     pNovo->pNext = NULL;
     
     printf("Digite o nome a ser adicionado: ");
-    scanf("%s", pNovo->info->nome);
+    scanf("%s", pNovo->info.nome);
 
     printf("Digite a idade: ");
-    scanf("%d", pNovo->info->idade);
+    scanf("%d", &pNovo->info.idade);
 
     printf("Digite o telefone: ");
-    scanf("%s", pNovo->info->telefone);
+    scanf("%s", pNovo->info.telefone);
+  
 
 
     if (!pBuffer->pFirst) {
@@ -93,5 +97,22 @@ void *incluir (Variavel *pBuffer) {
         pBuffer->pLast->pNext = pNovo; //antigo ultimo next recebe o endereço do novo ultimo
         pBuffer->pLast = pNovo;  
     }
+    pBuffer->nCount += 1;
+
+}
+
+void *apagar (Variavel *pBuffer) {
+
+}
+
+void buscar (Variavel *pBuffer) {
+
+}
+
+void listar (Variavel *pBuffer) {
+
+}
+
+void sair (Variavel *pBuffer) {
 
 }
