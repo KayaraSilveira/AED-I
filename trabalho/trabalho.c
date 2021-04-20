@@ -22,7 +22,7 @@ typedef struct {
 
     int i, count, escolha;
     char nomeAux[30];
-    Nodo *pAux, *pAuxii;
+    Nodo *pAux, *pAuxii, *pAuxiii;
     unsigned int nCount; 
     Nodo *pFirst;
     Nodo *pLast;
@@ -75,7 +75,7 @@ int main () {
 
 void *incluir (Variavel *pBuffer) {
     Nodo *pNovo;
-    pNovo = (Nodo *) malloc(sizeof(Nodo));
+    pNovo = malloc(sizeof(Nodo));
     pNovo->pNext = NULL;
     
     printf("Digite o nome a ser adicionado: ");
@@ -102,9 +102,9 @@ void *incluir (Variavel *pBuffer) {
 
 }
 
-void *apagar (Variavel *pBuffer) {
+void *apagar (Variavel *pBuffer) { //apaga só o primeiro, nao sei se deveria ser assim ou apagar por nome
 
-    if(pBuffer->nCount != 0) {
+   /* if(pBuffer->nCount != 0) {
         pBuffer->pAux = pBuffer->pFirst;
         pBuffer->pFirst = pBuffer->pFirst->pNext;
         free(pBuffer->pAux);
@@ -113,6 +113,53 @@ void *apagar (Variavel *pBuffer) {
     }
     else 
         printf("A lista esta vazia\n");
+        */
+    printf("Digite o nome que voce deseja apagar: ");
+    scanf("%s", pBuffer->nomeAux);
+
+    pBuffer->pAux = pBuffer->pFirst;
+    pBuffer->count = 0;
+
+    for(pBuffer->i = 0; pBuffer->i < pBuffer->nCount; pBuffer->i += 1) {
+        if(strcmp(pBuffer->pAux->info.nome, pBuffer->nomeAux) == 0) { 
+            
+            pBuffer->count += 1; 
+
+            if(pBuffer->nCount == 1){
+                pBuffer->pFirst = NULL;
+                pBuffer->pLast = NULL;
+            }
+            else {
+                if(pBuffer->pAux == pBuffer->pFirst) {
+                    pBuffer->pFirst = pBuffer->pAux->pNext;
+                    pBuffer->pAuxiii = pBuffer->pAux->pNext; //guarda o proximo no auxiii
+                    pBuffer->pAuxiii->pPrevious = NULL;
+                }
+                else {
+                    if(pBuffer->pAux == pBuffer->pLast) {
+                        pBuffer->pLast = pBuffer->pAux->pPrevious;
+                        pBuffer->pAuxii = pBuffer->pAux->pPrevious; //guarda o anterior no auxii
+                        pBuffer->pAuxii->pNext = NULL;
+                    }
+                    else {
+                        pBuffer->pAuxii = pBuffer->pAux->pPrevious; //guarda o anterior no auxii
+                        pBuffer->pAuxii->pNext = pBuffer->pAux->pNext; //aponta o proximo do auxii pro proximo após o apagado
+                        pBuffer->pAuxiii = pBuffer->pAux->pNext; //guarda o proximo no auxiii
+                        pBuffer->pAuxiii->pPrevious = pBuffer->pAux->pPrevious; //aponta o anterior do auxiii pro anterior antes do apagado
+                    }
+                } 
+            }
+            free(pBuffer->pAux);
+            pBuffer->nCount -= 1;
+            printf("Nome apagado\n");
+            pBuffer->i = pBuffer->nCount;
+            }
+        else 
+            pBuffer->pAux = pBuffer->pAux->pNext;   
+    }
+
+    if(pBuffer->count == 0)
+        printf("O nome nao foi encontrado\n");
 
 }
 
@@ -124,7 +171,7 @@ void buscar (Variavel *pBuffer) {
     printf("Digite o nome que voce procura: ");
     scanf("%s", pBuffer->nomeAux);
 
-    for(pBuffer->i = 0; pBuffer->i < pBuffer->nCount; pBuffer->i += 1) {
+     for(pBuffer->i = 0; pBuffer->i < pBuffer->nCount; pBuffer->i += 1) {
         if(strcmp(pBuffer->pAux->info.nome, pBuffer->nomeAux) == 0) {
             printf("Nome: %s ", pBuffer->pAux->info.nome);
             printf("Idade: %d ", pBuffer->pAux->info.idade);
@@ -132,7 +179,8 @@ void buscar (Variavel *pBuffer) {
             pBuffer->count += 1;
         }
         pBuffer->pAux = pBuffer->pAux->pNext;
-    }
+     }
+    
     if(pBuffer->count == 0)
         printf("O nome nao foi encontrado\n");
 
@@ -168,5 +216,6 @@ void sair (Variavel *pBuffer) {
     }
 
     free(pBuffer);
-
 }
+
+
