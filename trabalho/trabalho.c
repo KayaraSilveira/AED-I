@@ -21,6 +21,8 @@ typedef struct {
 typedef struct {
 
     int i, j, escolha;
+    char nomeAux[30];
+    Nodo *pAux;
     unsigned int nCount; 
     Nodo *pFirst;
     Nodo *pLast;
@@ -85,18 +87,16 @@ void *incluir (Variavel *pBuffer) {
     printf("Digite o telefone: ");
     scanf("%s", pNovo->info.telefone);
   
-
-
     if (!pBuffer->pFirst) {
         pBuffer->pFirst = pNovo;
-        pBuffer->pLast = pNovo;
         pBuffer->pFirst->pPrevious = NULL;
     }
     else { 
         pNovo->pPrevious = pBuffer->pLast; //anterior do pNovo vai ser o antigo ultimo
-        pBuffer->pLast->pNext = pNovo; //antigo ultimo next recebe o endereço do novo ultimo
-        pBuffer->pLast = pNovo;  
+        pBuffer->pLast->pNext = pNovo; //antigo ultimo next recebe o endereço do novo ultimo 
     }
+
+    pBuffer->pLast = pNovo;
     pBuffer->nCount += 1;
 
 }
@@ -110,6 +110,20 @@ void buscar (Variavel *pBuffer) {
 }
 
 void listar (Variavel *pBuffer) {
+
+    pBuffer->pAux = pBuffer->pFirst;
+
+    if(pBuffer->nCount != 0) {
+        for(pBuffer->i = 0; pBuffer->i < pBuffer->nCount; pBuffer->i += 1) {
+            printf("Nome: %s ", pBuffer->pAux->info.nome);
+            printf("Idade: %d ", pBuffer->pAux->info.idade);
+            printf("Telefone: %s\n", pBuffer->pAux->info.telefone);
+            pBuffer->pAux = pBuffer->pAux->pNext;
+
+        }
+    }
+    else 
+        printf("A lista esta vazia\n");
 
 }
 
