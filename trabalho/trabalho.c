@@ -102,18 +102,8 @@ void *incluir (Variavel *pBuffer) {
 
 }
 
-void *apagar (Variavel *pBuffer) { //apaga só o primeiro, nao sei se deveria ser assim ou apagar por nome
+void *apagar (Variavel *pBuffer) { 
 
-   /* if(pBuffer->nCount != 0) {
-        pBuffer->pAux = pBuffer->pFirst;
-        pBuffer->pFirst = pBuffer->pFirst->pNext;
-        free(pBuffer->pAux);
-        printf("Nome apagado\n");
-        pBuffer->nCount -= 1;
-    }
-    else 
-        printf("A lista esta vazia\n");
-        */
     printf("Digite o nome que voce deseja apagar: ");
     scanf("%s", pBuffer->nomeAux);
 
