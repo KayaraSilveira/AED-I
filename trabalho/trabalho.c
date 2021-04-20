@@ -98,10 +98,21 @@ void *incluir (Variavel *pBuffer) {
 
     pBuffer->pLast = pNovo;
     pBuffer->nCount += 1;
+    printf("Nome incluido\n");
 
 }
 
 void *apagar (Variavel *pBuffer) {
+
+    if(pBuffer->nCount != 0) {
+        pBuffer->pAux = pBuffer->pFirst;
+        pBuffer->pFirst = pBuffer->pFirst->pNext;
+        free(pBuffer->pAux);
+        printf("Nome apagado\n");
+        pBuffer->nCount -= 1;
+    }
+    else 
+        printf("A lista esta vazia\n");
 
 }
 
