@@ -22,7 +22,7 @@ typedef struct {
 
     int i, j, escolha;
     char nomeAux[30];
-    Nodo *pAux;
+    Nodo *pAux, *pAuxii;
     unsigned int nCount; 
     Nodo *pFirst;
     Nodo *pLast;
@@ -128,5 +128,17 @@ void listar (Variavel *pBuffer) {
 }
 
 void sair (Variavel *pBuffer) {
+
+    pBuffer->pAux = pBuffer->pFirst;
+
+    for(pBuffer->i = 0; pBuffer->i < pBuffer->nCount; pBuffer->i += 1) {
+        
+        pBuffer->pAuxii = pBuffer->pAux;
+        pBuffer->pAux = pBuffer->pAux->pNext;
+        free(pBuffer->pAuxii);
+
+    }
+
+    free(pBuffer);
 
 }
