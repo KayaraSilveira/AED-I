@@ -20,7 +20,7 @@ typedef struct {
 
 typedef struct {
 
-    int i, j, escolha;
+    int i, count, escolha;
     char nomeAux[30];
     Nodo *pAux, *pAuxii;
     unsigned int nCount; 
@@ -107,6 +107,24 @@ void *apagar (Variavel *pBuffer) {
 
 void buscar (Variavel *pBuffer) {
 
+    pBuffer->pAux = pBuffer->pFirst;
+    pBuffer->count = 0;
+
+    printf("Digite o nome que voce procura: ");
+    scanf("%s", pBuffer->nomeAux);
+
+    for(pBuffer->i = 0; pBuffer->i < pBuffer->nCount; pBuffer->i += 1) {
+        if(strcmp(pBuffer->pAux->info.nome, pBuffer->nomeAux) == 0) {
+            printf("Nome: %s ", pBuffer->pAux->info.nome);
+            printf("Idade: %d ", pBuffer->pAux->info.idade);
+            printf("Telefone: %s\n", pBuffer->pAux->info.telefone);
+            pBuffer->count += 1;
+        }
+        pBuffer->pAux = pBuffer->pAux->pNext;
+    }
+    if(pBuffer->count == 0)
+        printf("O nome nao foi encontrado\n");
+
 }
 
 void listar (Variavel *pBuffer) {
@@ -119,7 +137,6 @@ void listar (Variavel *pBuffer) {
             printf("Idade: %d ", pBuffer->pAux->info.idade);
             printf("Telefone: %s\n", pBuffer->pAux->info.telefone);
             pBuffer->pAux = pBuffer->pAux->pNext;
-
         }
     }
     else 
