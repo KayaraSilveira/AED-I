@@ -221,8 +221,8 @@ void sair (Variavel *pBuffer) {
         free(pBuffer->pAuxii);
 
     }
-
     free(pBuffer);
+    exit(1);
 }
 
 void menuOrdenar (Variavel *pBuffer) {
