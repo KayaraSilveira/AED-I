@@ -47,10 +47,10 @@ void alfabeticaDecrescente (Variavel *pBuffer);
 void idade (Variavel *pBuffer);
 void idadeDecrescente (Variavel *pBuffer);
 void listarFilaOrdenada (Variavel *pBuffer);
-void POPAlfabetica (Variavel *pBuffer);
-void POPAlfabeticaDecrescente (Variavel *pBuffer);
-void POPIdade (Variavel *pBuffer);
-void POPIdadeDecrescente (Variavel *pBuffer);
+void PUSHAlfabetica (Variavel *pBuffer);
+void PUSHlfabeticaDecrescente (Variavel *pBuffer);
+void PUSHIdade (Variavel *pBuffer);
+void PUSHIdadeDecrescente (Variavel *pBuffer);
 
 
 
@@ -255,7 +255,7 @@ void alfabetica (Variavel *pBuffer) {
     pBuffer->pAux = pBuffer->pFirst; //auxiliar eh o primeiro elemento do aux
 
     for(pBuffer->i = 0; pBuffer->i < pBuffer->nCount; pBuffer->i = pBuffer->i + 1) { //percorre toda LISTA
-        POPAlfabetica(pBuffer);
+        PUSHAlfabetica(pBuffer);
         pBuffer->nCountFila += 1;
         pBuffer->pAux = pBuffer->pAux->pNext;
     }
@@ -271,7 +271,7 @@ void alfabeticaDecrescente (Variavel *pBuffer) {
     pBuffer->pAux = pBuffer->pFirst; //auxiliar eh o primeiro elemento do aux
 
     for(pBuffer->i = 0; pBuffer->i < pBuffer->nCount; pBuffer->i = pBuffer->i + 1) { //percorre toda LISTA
-        POPAlfabeticaDecrescente(pBuffer);
+        PUSHAlfabeticaDecrescente(pBuffer);
         pBuffer->nCountFila += 1;
         pBuffer->pAux = pBuffer->pAux->pNext;
     }
@@ -287,7 +287,7 @@ void idade (Variavel *pBuffer) {
     pBuffer->pAux = pBuffer->pFirst; //auxiliar eh o primeiro elemento do aux
 
     for(pBuffer->i = 0; pBuffer->i < pBuffer->nCount; pBuffer->i = pBuffer->i + 1) { //percorre toda LISTA
-        POPIdade(pBuffer);
+        PUSHIdade(pBuffer);
         pBuffer->nCountFila += 1;
         pBuffer->pAux = pBuffer->pAux->pNext;
     }
@@ -303,7 +303,7 @@ void idadeDecrescente (Variavel *pBuffer){
     pBuffer->pAux = pBuffer->pFirst; //auxiliar eh o primeiro elemento do aux
 
     for(pBuffer->i = 0; pBuffer->i < pBuffer->nCount; pBuffer->i = pBuffer->i + 1) { //percorre toda LISTA
-        POPIdadeDecrescente(pBuffer);
+        PUSHIdadeDecrescente(pBuffer);
         pBuffer->nCountFila += 1;
         pBuffer->pAux = pBuffer->pAux->pNext;
     }
@@ -325,7 +325,7 @@ void listarFilaOrdenada (Variavel *pBuffer){
     }
 }
 
-void POPAlfabetica (Variavel *pBuffer) {
+void PUSHAlfabetica (Variavel *pBuffer) {
         
         Nodo *pNovo;
         pNovo = malloc(sizeof(Nodo)); 
@@ -404,7 +404,7 @@ void POPAlfabetica (Variavel *pBuffer) {
         }
     }
 
-void POPAlfabeticaDecrescente (Variavel *pBuffer) {
+void PUSHAlfabeticaDecrescente (Variavel *pBuffer) {
     Nodo *pNovo;
     pNovo = malloc(sizeof(Nodo)); 
         
@@ -482,7 +482,7 @@ void POPAlfabeticaDecrescente (Variavel *pBuffer) {
         }   
     }
 
-void POPIdade (Variavel *pBuffer) {
+void PUSHIdade (Variavel *pBuffer) {
 
     Nodo *pNovo;
         pNovo = malloc(sizeof(Nodo)); 
@@ -561,7 +561,7 @@ void POPIdade (Variavel *pBuffer) {
         }
     }
 
-void POPIdadeDecrescente (Variavel *pBuffer) {
+void PUSHIdadeDecrescente (Variavel *pBuffer) {
     Nodo *pNovo;
     pNovo = malloc(sizeof(Nodo)); 
         
