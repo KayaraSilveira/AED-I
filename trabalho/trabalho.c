@@ -20,7 +20,10 @@ typedef struct {
 
 typedef struct {
 
-    int i, j, k, l, count, escolha;
+    int i;
+    int j;
+    int count;
+    int escolha;
     char nomeAux[30];
     Nodo *pAux, *pAuxii, *pAuxiii;
     unsigned int nCount; 
@@ -39,12 +42,16 @@ void buscar (Variavel *pBuffer);
 void listar (Variavel *pBuffer);
 void sair (Variavel *pBuffer);
 void menuOrdenar (Variavel *pBuffer);
-void ordemAlfabetica (Variavel *pBuffer);
-void ordemAlfabeticaDecrescente (Variavel *pBuffer);
-void idadeCrescente (Variavel *pBuffer);
+void alfabetica (Variavel *pBuffer);
+void alfabeticaDecrescente (Variavel *pBuffer);
+void idade (Variavel *pBuffer);
 void idadeDecrescente (Variavel *pBuffer);
 void listarFilaOrdenada (Variavel *pBuffer);
-Nodo POP (Variavel *pBuffer);
+void POPAlfabetica (Variavel *pBuffer);
+void POPAlfabeticaDecrescente (Variavel *pBuffer);
+void POPIdade (Variavel *pBuffer);
+void POPIdadeDecrescente (Variavel *pBuffer);
+
 
 
 int main () {
@@ -72,8 +79,7 @@ int main () {
                 buscar(pBuffer);
                 break;
             case 4:
-                menuOrdenar (pBuffer);
-                listar(pBuffer);
+                menuOrdenar(pBuffer);
                 break;
             case 5:
                 sair(pBuffer);
@@ -226,13 +232,13 @@ void menuOrdenar (Variavel *pBuffer) {
 
     switch(pBuffer->escolha){
             case 1: 
-                ordemAlfabetica(pBuffer);
+                alfabetica(pBuffer);
                 break;
            case 2:
-                ordemAlfabeticaDecrescente(pBuffer);
+                alfabeticaDecrescente(pBuffer);
                 break;
             case 3:
-                idadeCrescente(pBuffer);
+                idade(pBuffer);
                 break;
             case 4:
                 idadeDecrescente(pBuffer);
@@ -241,16 +247,89 @@ void menuOrdenar (Variavel *pBuffer) {
         }
 }
 
-void ordemAlfabetica (Variavel *pBuffer) {
+void alfabetica (Variavel *pBuffer) {
 
+    pBuffer->pLastFila = NULL;
+    pBuffer->pFirstFila = NULL;
     pBuffer->nCountFila = 0;
-    pBuffer->pAux = pBuffer->pFirst;
+    pBuffer->pAux = pBuffer->pFirst; //auxiliar eh o primeiro elemento do aux
+
+    for(pBuffer->i = 0; pBuffer->i < pBuffer->nCount; pBuffer->i = pBuffer->i + 1) { //percorre toda LISTA
+        POPAlfabetica(pBuffer);
+        pBuffer->nCountFila += 1;
+        pBuffer->pAux = pBuffer->pAux->pNext;
+    }
+    listarFilaOrdenada(pBuffer);
+   
+}
+
+void alfabeticaDecrescente (Variavel *pBuffer) {
     
+    pBuffer->pLastFila = NULL;
+    pBuffer->pFirstFila = NULL;
+    pBuffer->nCountFila = 0;
+    pBuffer->pAux = pBuffer->pFirst; //auxiliar eh o primeiro elemento do aux
 
-    for(pBuffer->i = 0; pBuffer->i < pBuffer->nCount; pBuffer->i += 1) {
+    for(pBuffer->i = 0; pBuffer->i < pBuffer->nCount; pBuffer->i = pBuffer->i + 1) { //percorre toda LISTA
+        POPAlfabeticaDecrescente(pBuffer);
+        pBuffer->nCountFila += 1;
+        pBuffer->pAux = pBuffer->pAux->pNext;
+    }
+    listarFilaOrdenada(pBuffer);
+
+}
+
+void idade (Variavel *pBuffer) {
+    
+    pBuffer->pLastFila = NULL;
+    pBuffer->pFirstFila = NULL;
+    pBuffer->nCountFila = 0;
+    pBuffer->pAux = pBuffer->pFirst; //auxiliar eh o primeiro elemento do aux
+
+    for(pBuffer->i = 0; pBuffer->i < pBuffer->nCount; pBuffer->i = pBuffer->i + 1) { //percorre toda LISTA
+        POPIdade(pBuffer);
+        pBuffer->nCountFila += 1;
+        pBuffer->pAux = pBuffer->pAux->pNext;
+    }
+    listarFilaOrdenada(pBuffer);
+
+}
+
+void idadeDecrescente (Variavel *pBuffer){
+
+    pBuffer->pLastFila = NULL;
+    pBuffer->pFirstFila = NULL;
+    pBuffer->nCountFila = 0;
+    pBuffer->pAux = pBuffer->pFirst; //auxiliar eh o primeiro elemento do aux
+
+    for(pBuffer->i = 0; pBuffer->i < pBuffer->nCount; pBuffer->i = pBuffer->i + 1) { //percorre toda LISTA
+        POPIdadeDecrescente(pBuffer);
+        pBuffer->nCountFila += 1;
+        pBuffer->pAux = pBuffer->pAux->pNext;
+    }
+    listarFilaOrdenada(pBuffer);
+
+}
+
+void listarFilaOrdenada (Variavel *pBuffer){
+
+    pBuffer->pAux = pBuffer->pFirstFila;
+
+    for(pBuffer->i = 0; pBuffer->i < pBuffer->nCountFila; pBuffer->i = pBuffer->i + 1) {
+        pBuffer->pAuxii = pBuffer->pAux;
+        pBuffer->pAux = pBuffer->pAux->pNext;
+        printf("Nome: %s ", pBuffer->pAuxii->info.nome);
+        printf("Idade: %d ", pBuffer->pAuxii->info.idade);
+        printf("Telefone: %s\n", pBuffer->pAuxii->info.telefone);
+        free(pBuffer->pAuxii);
+    }
+}
+
+void POPAlfabetica (Variavel *pBuffer) {
+        
         Nodo *pNovo;
-        pNovo = malloc(sizeof(Nodo));
-
+        pNovo = malloc(sizeof(Nodo)); 
+        
         strcpy(pNovo->info.nome, pBuffer->pAux->info.nome);
         pNovo->info.idade = pBuffer->pAux->info.idade;
         strcpy(pNovo->info.telefone, pBuffer->pAux->info.telefone);
@@ -265,67 +344,298 @@ void ordemAlfabetica (Variavel *pBuffer) {
         else {
             pBuffer->j = pBuffer->nCountFila;
             pBuffer->pAuxii = pBuffer->pLastFila;
-            while((pBuffer->j > 0) && (strcmp(pNovo, pBuffer->pAuxii)<0)) {
 
-                if(pBuffer->j == 1){
-                    pBuffer->pAuxiii = pNovo->pNext;
-                    pBuffer->pAuxiii->pPrevious = pBuffer->pAuxii;
-                    pBuffer->pAuxii->pNext = pBuffer->pAuxiii;
-                    pBuffer->pAuxii->pPrevious = pNovo;
-                    pNovo->pNext = pBuffer->pAuxii;
-                    pNovo->pPrevious = NULL;
-                    pBuffer->pFirstFila = pNovo;
-                }
+            if(strcmp(pNovo->info.nome, pBuffer->pAuxii->info.nome) >= 0) {
+                pBuffer->pAuxii->pNext = pNovo;
+                pNovo->pPrevious = pBuffer->pAuxii;
+                pBuffer->pLastFila = pNovo;
+                pNovo->pNext = NULL;
+            }
 
-                else {
-
-                    if(pBuffer->j == pBuffer->nCountFila){
-                        pBuffer->pAuxiii = pBuffer->pAuxii->pPrevious;
-                        pBuffer->pAuxiii->pNext = pNovo;
-                        pNovo->pPrevious = pBuffer->pAuxiii;
-                        pNovo->pNext = pBuffer->pAuxii;
+            else {
+                while((pBuffer->j > 0) && (strcmp(pNovo->info.nome, pBuffer->pAuxii->info.nome) < 0)) {
+                    if((pBuffer->j == 1) && (pBuffer->j == pBuffer->nCountFila)){
                         pBuffer->pAuxii->pPrevious = pNovo;
+                        pNovo->pNext = pBuffer->pAuxii;
                         pBuffer->pAuxii->pNext = NULL;
-                        pBuffer->pLastFila = pNovo;
+                        pNovo->pPrevious = NULL;
+                        pBuffer->pFirstFila = pNovo;
+                        pBuffer->pLastFila = pBuffer->pAuxii;    
                     }
 
                     else {
-                        pBuffer->pAuxiii = pBuffer->pAuxii->pPrevious;
-                        pBuffer->pAuxiii->pNext = pNovo; 
-                        pNovo->pPrevious = pBuffer->pAuxiii;    
-                        pBuffer->pAuxiii = pNovo->pNext;
-                        pBuffer->pAuxiii->pPrevious = pBuffer->pAuxii;
-                        pBuffer->pAuxii->pNext = pBuffer->pAuxiii;
-                        pBuffer->pAuxii->pPrevious = pNovo;
-                        pNovo->pNext = pBuffer->pAuxii;
+                        if(pBuffer->j == pBuffer->nCountFila){
+                            pBuffer->pAuxiii = pBuffer->pAuxii->pPrevious;
+                            pBuffer->pAuxiii->pNext = pNovo;
+                            pNovo->pPrevious = pBuffer->pAuxiii;
+                            pNovo->pNext = pBuffer->pAuxii;
+                            pBuffer->pAuxii->pPrevious = pNovo;
+                            pBuffer->pAuxii->pNext = NULL;
+                            pBuffer->pLastFila = pBuffer->pAuxii;  
+                        }
+
+                        else {
+                            if(pBuffer->j == 1){
+                                pBuffer->pAuxiii = pNovo->pNext;
+                                pBuffer->pAuxiii->pPrevious = pBuffer->pAuxii;
+                                pBuffer->pAuxii->pNext = pBuffer->pAuxiii;
+                                pBuffer->pAuxii->pPrevious = pNovo;
+                                pNovo->pNext = pBuffer->pAuxii;
+                                pNovo->pPrevious = NULL;
+                                pBuffer->pFirstFila = pNovo;
+                            }   
+
+                            else {
+                                pBuffer->pAuxiii = pBuffer->pAuxii->pPrevious;
+                                pBuffer->pAuxiii->pNext = pNovo; 
+                                pNovo->pPrevious = pBuffer->pAuxiii;    
+                                pBuffer->pAuxiii = pNovo->pNext;
+                                pBuffer->pAuxiii->pPrevious = pBuffer->pAuxii;
+                                pBuffer->pAuxii->pNext = pBuffer->pAuxiii;
+                                pBuffer->pAuxii->pPrevious = pNovo;
+                                pNovo->pNext = pBuffer->pAuxii;
+                            }
+                        }
                     }
+                    pBuffer->pAuxii = pNovo->pPrevious;
+                    pBuffer->j = pBuffer->j - 1;
                 }
-                pBuffer->pAuxii = pNovo->pPrevious;
-                pBuffer->j -= 1;
             }
         }
-    pBuffer->nCountFila += 1;
-    pBuffer->pAux = pBuffer->pAux->pNext;
     }
 
-    listarFilaOrdenada(pBuffer);
-   
-}
+void POPAlfabeticaDecrescente (Variavel *pBuffer) {
+    Nodo *pNovo;
+    pNovo = malloc(sizeof(Nodo)); 
+        
+    strcpy(pNovo->info.nome, pBuffer->pAux->info.nome);
+    pNovo->info.idade = pBuffer->pAux->info.idade;
+    strcpy(pNovo->info.telefone, pBuffer->pAux->info.telefone);
+    
+        if(pBuffer->i == 0) {
+            pBuffer->pFirstFila = pNovo;
+            pBuffer->pLastFila = pNovo;
+            pBuffer->pFirstFila->pPrevious = NULL;
+            pBuffer->pFirstFila->pNext = NULL;
 
+        }
+        else {
+            pBuffer->j = pBuffer->nCountFila;
+            pBuffer->pAuxii = pBuffer->pLastFila;
 
+            if(strcmp(pNovo->info.nome, pBuffer->pAuxii->info.nome) < 0) {
+                pBuffer->pAuxii->pNext = pNovo;
+                pNovo->pPrevious = pBuffer->pAuxii;
+                pBuffer->pLastFila = pNovo;
+                pNovo->pNext = NULL;
+            }
 
-void ordemAlfabeticaDecrescente (Variavel *pBuffer) {
+            else {
+                while((pBuffer->j > 0) && (strcmp(pNovo->info.nome, pBuffer->pAuxii->info.nome) >= 0)) {
+                    if((pBuffer->j == 1) && (pBuffer->j == pBuffer->nCountFila)){
+                        pBuffer->pAuxii->pPrevious = pNovo;
+                        pNovo->pNext = pBuffer->pAuxii;
+                        pBuffer->pAuxii->pNext = NULL;
+                        pNovo->pPrevious = NULL;
+                        pBuffer->pFirstFila = pNovo;
+                        pBuffer->pLastFila = pBuffer->pAuxii;    
+                    }
 
-}
-void idadeCrescente (Variavel *pBuffer) {
+                    else {
+                        if(pBuffer->j == pBuffer->nCountFila){
+                            pBuffer->pAuxiii = pBuffer->pAuxii->pPrevious;
+                            pBuffer->pAuxiii->pNext = pNovo;
+                            pNovo->pPrevious = pBuffer->pAuxiii;
+                            pNovo->pNext = pBuffer->pAuxii;
+                            pBuffer->pAuxii->pPrevious = pNovo;
+                            pBuffer->pAuxii->pNext = NULL;
+                            pBuffer->pLastFila = pBuffer->pAuxii;  
+                        }
 
-}
-void idadeDecrescente (Variavel *pBuffer){
+                        else {
+                            if(pBuffer->j == 1){
+                                pBuffer->pAuxiii = pNovo->pNext;
+                                pBuffer->pAuxiii->pPrevious = pBuffer->pAuxii;
+                                pBuffer->pAuxii->pNext = pBuffer->pAuxiii;
+                                pBuffer->pAuxii->pPrevious = pNovo;
+                                pNovo->pNext = pBuffer->pAuxii;
+                                pNovo->pPrevious = NULL;
+                                pBuffer->pFirstFila = pNovo;
+                            }   
 
-}
-void listarFilaOrdenada (Variavel *pBuffer){
+                            else {
+                                pBuffer->pAuxiii = pBuffer->pAuxii->pPrevious;
+                                pBuffer->pAuxiii->pNext = pNovo; 
+                                pNovo->pPrevious = pBuffer->pAuxiii;    
+                                pBuffer->pAuxiii = pNovo->pNext;
+                                pBuffer->pAuxiii->pPrevious = pBuffer->pAuxii;
+                                pBuffer->pAuxii->pNext = pBuffer->pAuxiii;
+                                pBuffer->pAuxii->pPrevious = pNovo;
+                                pNovo->pNext = pBuffer->pAuxii;
+                            }
+                        }
+                    }
+                    pBuffer->pAuxii = pNovo->pPrevious;
+                    pBuffer->j = pBuffer->j - 1;
+                }
+            }
+        }   
+    }
 
-}
-Nodo POP (Variavel *pBuffer){
+void POPIdade (Variavel *pBuffer) {
 
-}
+    Nodo *pNovo;
+        pNovo = malloc(sizeof(Nodo)); 
+        
+        strcpy(pNovo->info.nome, pBuffer->pAux->info.nome);
+        pNovo->info.idade = pBuffer->pAux->info.idade;
+        strcpy(pNovo->info.telefone, pBuffer->pAux->info.telefone);
+    
+        if(pBuffer->i == 0) {
+            pBuffer->pFirstFila = pNovo;
+            pBuffer->pLastFila = pNovo;
+            pBuffer->pFirstFila->pPrevious = NULL;
+            pBuffer->pFirstFila->pNext = NULL;
+
+        }
+        else {
+            pBuffer->j = pBuffer->nCountFila;
+            pBuffer->pAuxii = pBuffer->pLastFila;
+
+            if(pNovo->info.idade >= pBuffer->pAuxii->info.idade) {
+                pBuffer->pAuxii->pNext = pNovo;
+                pNovo->pPrevious = pBuffer->pAuxii;
+                pBuffer->pLastFila = pNovo;
+                pNovo->pNext = NULL;
+            }
+
+            else {
+                while((pBuffer->j > 0) && (pNovo->info.idade < pBuffer->pAuxii->info.idade)) {
+                    if((pBuffer->j == 1) && (pBuffer->j == pBuffer->nCountFila)){
+                        pBuffer->pAuxii->pPrevious = pNovo;
+                        pNovo->pNext = pBuffer->pAuxii;
+                        pBuffer->pAuxii->pNext = NULL;
+                        pNovo->pPrevious = NULL;
+                        pBuffer->pFirstFila = pNovo;
+                        pBuffer->pLastFila = pBuffer->pAuxii;    
+                    }
+
+                    else {
+                        if(pBuffer->j == pBuffer->nCountFila){
+                            pBuffer->pAuxiii = pBuffer->pAuxii->pPrevious;
+                            pBuffer->pAuxiii->pNext = pNovo;
+                            pNovo->pPrevious = pBuffer->pAuxiii;
+                            pNovo->pNext = pBuffer->pAuxii;
+                            pBuffer->pAuxii->pPrevious = pNovo;
+                            pBuffer->pAuxii->pNext = NULL;
+                            pBuffer->pLastFila = pBuffer->pAuxii;  
+                        }
+
+                        else {
+                            if(pBuffer->j == 1){
+                                pBuffer->pAuxiii = pNovo->pNext;
+                                pBuffer->pAuxiii->pPrevious = pBuffer->pAuxii;
+                                pBuffer->pAuxii->pNext = pBuffer->pAuxiii;
+                                pBuffer->pAuxii->pPrevious = pNovo;
+                                pNovo->pNext = pBuffer->pAuxii;
+                                pNovo->pPrevious = NULL;
+                                pBuffer->pFirstFila = pNovo;
+                            }   
+
+                            else {
+                                pBuffer->pAuxiii = pBuffer->pAuxii->pPrevious;
+                                pBuffer->pAuxiii->pNext = pNovo; 
+                                pNovo->pPrevious = pBuffer->pAuxiii;    
+                                pBuffer->pAuxiii = pNovo->pNext;
+                                pBuffer->pAuxiii->pPrevious = pBuffer->pAuxii;
+                                pBuffer->pAuxii->pNext = pBuffer->pAuxiii;
+                                pBuffer->pAuxii->pPrevious = pNovo;
+                                pNovo->pNext = pBuffer->pAuxii;
+                            }
+                        }
+                    }
+                    pBuffer->pAuxii = pNovo->pPrevious;
+                    pBuffer->j = pBuffer->j - 1;
+                }
+            }
+        }
+    }
+
+void POPIdadeDecrescente (Variavel *pBuffer) {
+    Nodo *pNovo;
+    pNovo = malloc(sizeof(Nodo)); 
+        
+    strcpy(pNovo->info.nome, pBuffer->pAux->info.nome);
+    pNovo->info.idade = pBuffer->pAux->info.idade;
+    strcpy(pNovo->info.telefone, pBuffer->pAux->info.telefone);
+    
+    if(pBuffer->i == 0) {
+        pBuffer->pFirstFila = pNovo;
+        pBuffer->pLastFila = pNovo;
+        pBuffer->pFirstFila->pPrevious = NULL;
+        pBuffer->pFirstFila->pNext = NULL;
+
+        }
+        else {
+            pBuffer->j = pBuffer->nCountFila;
+            pBuffer->pAuxii = pBuffer->pLastFila;
+
+            if(pNovo->info.idade <= pBuffer->pAuxii->info.idade) {
+                pBuffer->pAuxii->pNext = pNovo;
+                pNovo->pPrevious = pBuffer->pAuxii;
+                pBuffer->pLastFila = pNovo;
+                pNovo->pNext = NULL;
+            }
+
+            else {
+                while((pBuffer->j > 0) && (pNovo->info.idade > pBuffer->pAuxii->info.idade)) {
+                    if((pBuffer->j == 1) && (pBuffer->j == pBuffer->nCountFila)){
+                        pBuffer->pAuxii->pPrevious = pNovo;
+                        pNovo->pNext = pBuffer->pAuxii;
+                        pBuffer->pAuxii->pNext = NULL;
+                        pNovo->pPrevious = NULL;
+                        pBuffer->pFirstFila = pNovo;
+                        pBuffer->pLastFila = pBuffer->pAuxii;    
+                    }
+
+                    else {
+                        if(pBuffer->j == pBuffer->nCountFila){
+                            pBuffer->pAuxiii = pBuffer->pAuxii->pPrevious;
+                            pBuffer->pAuxiii->pNext = pNovo;
+                            pNovo->pPrevious = pBuffer->pAuxiii;
+                            pNovo->pNext = pBuffer->pAuxii;
+                            pBuffer->pAuxii->pPrevious = pNovo;
+                            pBuffer->pAuxii->pNext = NULL;
+                            pBuffer->pLastFila = pBuffer->pAuxii;  
+                        }
+
+                        else {
+                            if(pBuffer->j == 1){
+                                pBuffer->pAuxiii = pNovo->pNext;
+                                pBuffer->pAuxiii->pPrevious = pBuffer->pAuxii;
+                                pBuffer->pAuxii->pNext = pBuffer->pAuxiii;
+                                pBuffer->pAuxii->pPrevious = pNovo;
+                                pNovo->pNext = pBuffer->pAuxii;
+                                pNovo->pPrevious = NULL;
+                                pBuffer->pFirstFila = pNovo;
+                            }   
+
+                            else {
+                                pBuffer->pAuxiii = pBuffer->pAuxii->pPrevious;
+                                pBuffer->pAuxiii->pNext = pNovo; 
+                                pNovo->pPrevious = pBuffer->pAuxiii;    
+                                pBuffer->pAuxiii = pNovo->pNext;
+                                pBuffer->pAuxiii->pPrevious = pBuffer->pAuxii;
+                                pBuffer->pAuxii->pNext = pBuffer->pAuxiii;
+                                pBuffer->pAuxii->pPrevious = pNovo;
+                                pNovo->pNext = pBuffer->pAuxii;
+                            }
+                        }
+                    }
+                    pBuffer->pAuxii = pNovo->pPrevious;
+                    pBuffer->j = pBuffer->j - 1;
+                }
+            }
+        }
+    }
+
