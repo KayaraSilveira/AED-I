@@ -37,6 +37,7 @@ int main () {
 
     for(i = 0; i < quantidade; i++) {
         random = rand()%1000;
+        printf("numero inserido: %d\n", random);
         Insere (&pRaiz, random);
     }
 
@@ -197,10 +198,10 @@ int Imprime (Nodo *pRaiz) {
 
     if(pRaiz != NULL) {
 
-        printf("%d\n", pRaiz->reg.numero);
+        printf("%d(", pRaiz->reg.numero);
         Imprime(pRaiz->pEsq);
         Imprime(pRaiz->pDir);
-      
+        printf(")");
     }
 }
 
