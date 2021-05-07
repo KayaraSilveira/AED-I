@@ -149,7 +149,7 @@ void RSD (Nodo** ppRaiz) {
 int BalancaEsquerda (Nodo** ppRaiz) {
 
     int fbe = FB ((*ppRaiz)->pEsq);
-    if (fbe > 0) {
+    if (fbe >= 0) {
         RSD(ppRaiz);
         return 1;
     }
@@ -164,7 +164,7 @@ int BalancaEsquerda (Nodo** ppRaiz) {
 int BalancaDireita (Nodo** ppRaiz) {
 
     int fbd = FB ((*ppRaiz)->pDir);
-    if (fbd < 0) {
+    if (fbd <= 0) {
         RSE(ppRaiz);
         return 1;
     }
@@ -233,7 +233,6 @@ int Remove (Nodo** ppRaiz, int x) {
     if ((*ppRaiz)->reg.numero > x) {
         if ((retorno = Remove(&(*ppRaiz)->pEsq, x)) == 1 ) {
             Balanceamento(ppRaiz);
-
         }
     }
 
@@ -321,7 +320,9 @@ void SegundoCenario () {
 
     Nodo *pRaiz = NULL;
 
-    printf("caso 1a: inserindo 15 na primeira arvore\n");
+    printf("\n.....Testes de insercao.....\n");
+
+    printf("\ncaso 1a: inserindo 15 na primeira arvore\n");
     Insere(&pRaiz, 20);
     Insere(&pRaiz, 4);
     printf("primeira arvore: ");
@@ -334,6 +335,7 @@ void SegundoCenario () {
     FreeArvore(pRaiz);
     pRaiz = NULL;
     printf("\n");
+
     printf("caso 2a: inserindo 15 na segunda arvore\n");
     Insere(&pRaiz, 20);
     Insere(&pRaiz, 4);
@@ -350,6 +352,7 @@ void SegundoCenario () {
     FreeArvore(pRaiz);
     pRaiz = NULL;
     printf("\n");
+
     printf("caso 3a: inserindo 15 na terceira arvore\n");
     Insere(&pRaiz, 20);
     Insere(&pRaiz, 4);
@@ -371,6 +374,7 @@ void SegundoCenario () {
     FreeArvore(pRaiz);
     pRaiz = NULL;
     printf("\n");
+
     printf("caso 1b: inserindo 8 na primeira arvore\n");
     Insere(&pRaiz, 20);
     Insere(&pRaiz, 4);
@@ -384,6 +388,7 @@ void SegundoCenario () {
     FreeArvore(pRaiz);
     pRaiz = NULL;
     printf("\n");
+
     printf("caso 2b: inserindo 8 na segunda arvore\n");
     Insere(&pRaiz, 20);
     Insere(&pRaiz, 4);
@@ -400,6 +405,7 @@ void SegundoCenario () {
     FreeArvore(pRaiz);
     pRaiz = NULL;
     printf("\n");
+
     printf("caso 3b: inserindo 8 na terceira arvore\n");
     Insere(&pRaiz, 20);
     Insere(&pRaiz, 4);
@@ -422,7 +428,70 @@ void SegundoCenario () {
     pRaiz = NULL;
     printf("\n");
 
+    printf("\n.....Testes de exclusao.....\n");
 
+    printf("\ncaso 1: exluindo o 1 na primeira arvore\n");
+    Insere(&pRaiz, 2);
+    Insere(&pRaiz, 1);
+    Insere(&pRaiz, 4);
+    Insere(&pRaiz, 3);
+    Insere(&pRaiz, 5);
+    printf("primeira arvore: ");
+    Imprime(pRaiz);
+    printf("\n");
+    Remove(&pRaiz, 1);
+    printf("arvore apos a exclusao do 1: "); 
+    Imprime(pRaiz);
+    printf("\n");
+    FreeArvore(pRaiz);
+    pRaiz = NULL;
+    printf("\n");
 
+    printf("caso 2: exlcuindo o 1 na segunda arvore\n");
+    Insere(&pRaiz, 6);
+    Insere(&pRaiz, 2);
+    Insere(&pRaiz, 9);
+    Insere(&pRaiz, 1);
+    Insere(&pRaiz, 8);
+    Insere(&pRaiz, 4);
+    Insere(&pRaiz, 11);
+    Insere(&pRaiz, 3);
+    Insere(&pRaiz, 7);
+    Insere(&pRaiz, 5);
+    Insere(&pRaiz, 12);
+    Insere(&pRaiz, 10);
+    Insere(&pRaiz, 13);
+    printf("segunda arvore: ");
+    Imprime(pRaiz);
+    printf("\n");
+    Remove(&pRaiz, 1);
+    printf("arvore apos a exclusao do 1: ");
+    Imprime(pRaiz);
+    printf("\n");
+    FreeArvore(pRaiz);
+    pRaiz = NULL;
+    printf("\n");
+
+    printf("caso 3: exlcuindo o 1 na terceira arvore\n");
+    Insere(&pRaiz, 5);
+    Insere(&pRaiz, 2);
+    Insere(&pRaiz, 8);
+    Insere(&pRaiz, 1);
+    Insere(&pRaiz, 3);
+    Insere(&pRaiz, 7);
+    Insere(&pRaiz, 10);
+    Insere(&pRaiz, 4);
+    Insere(&pRaiz, 6);
+    Insere(&pRaiz, 11);
+    Insere(&pRaiz, 9);
+    Insere(&pRaiz, 12);
+    printf("terceira arvore: ");
+    Imprime(pRaiz);
+    printf("\n");
+    Remove(&pRaiz, 1);
+    printf("arvore apos a exclusao do 1: ");
+    Imprime(pRaiz);
+    printf("\n");
+    FreeArvore(pRaiz);
 
 }
