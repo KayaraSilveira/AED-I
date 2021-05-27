@@ -1,6 +1,7 @@
 #include <stdio.h> 
 #include <stdlib.h>
 #include <math.h>
+#include <sys/time.h>
 
 void mergeSort (int *data, int inicio, int fim);
 void merge(int *data, int inicio, int meio, int fim);
@@ -10,12 +11,14 @@ void insertionSort (int *data, int size);
 void printa(int *data, int size); 
 void verifica (int *data, int size);
 int *copia(int *pVetor, int size);
+float time_diff(struct timeval *start, struct timeval *end);
 
 
 int main () {
 
     srand(time(NULL));
     int selection, size, number, i; 
+    struct timeval begin, end;
 
     printf("Digite o tamanho do vetor: \n");
     scanf("%d", &size);
@@ -36,33 +39,45 @@ int main () {
         switch(selection){
             case 1: 
                 pVetorOrdenado = copia(pVetor, size);
+                gettimeofday(&begin, NULL);
                 insertionSort(pVetorOrdenado, size);
+                gettimeofday (&end, NULL);
                 printa(pVetorOrdenado, size);
                 verifica(pVetorOrdenado, size);
+                printf("tempo de execucao:: %0.8f sec\n", time_diff(&begin, &end));
                 free(pVetorOrdenado);
                 break;
 
            case 2:
                 pVetorOrdenado = copia(pVetor, size);
+                gettimeofday(&begin, NULL);
                 selectSort(pVetorOrdenado, size);
+                gettimeofday (&end, NULL);
                 printa(pVetorOrdenado, size);
                 verifica(pVetorOrdenado, size);
+                printf("tempo de execucao:: %0.8f sec\n", time_diff(&begin, &end));
                 free(pVetorOrdenado);
                 break;
 
             case 3:
                 pVetorOrdenado = copia(pVetor, size);
+                gettimeofday(&begin, NULL);
                 quickSort(pVetorOrdenado, 0, size - 1);
+                gettimeofday (&end, NULL);
                 printa(pVetorOrdenado, size);
                 verifica(pVetorOrdenado, size);
+                printf("tempo de execucao:: %0.8f sec\n", time_diff(&begin, &end));
                 free(pVetorOrdenado);
                 break;
 
             case 4:
                 pVetorOrdenado = copia(pVetor, size);
+                gettimeofday(&begin, NULL);
                 mergeSort(pVetorOrdenado, 0, size - 1);
+                gettimeofday (&end, NULL);
                 printa(pVetorOrdenado, size);
                 verifica(pVetorOrdenado, size);
+                printf("tempo de execucao:: %0.8f sec\n", time_diff(&begin, &end));
                 free(pVetorOrdenado);
                 break;
 
@@ -222,5 +237,10 @@ int *copia(int *pVetor, int size) {
     }
 
     return pVetorOrdenado;
+}
+
+float time_diff(struct timeval *start, struct timeval *end) {
+
+    return (end->tv_sec - start->tv_sec) + 1e-6*(end->tv_usec - start->tv_usec);
 }
 
