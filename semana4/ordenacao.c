@@ -1,25 +1,30 @@
 #include <stdio.h> 
+#include <stdlib.h>
+#include <math.h>
 
-int *Merge_sort (int *data);
-int *Merge(int *left, int *right);
-void Quicksort (int data[], int left, int right);
-void Selectsort (int data[], int n);
-void Insertionsort (int data[], int size);
-void Printa(int data[], int size); 
-void verifica (int data[], int size);
+void mergeSort (int *data, int inicio, int fim);
+void merge(int *data, int inicio, int meio, int fim);
+void quickSort (int *data, int left, int right);
+void selectSort (int *data, int n);
+void insertionSort (int *data, int size);
+void printa(int *data, int size); 
+void verifica (int *data, int size);
+int *copia(int *pVetor, int size);
+
 
 int main () {
 
     srand(time(NULL));
-    int size, number, i, selection; 
+    int selection, size, number, i; 
 
     printf("Digite o tamanho do vetor: \n");
     scanf("%d", &size);
-    int vet[size];
+    int *pVetor, *pVetorOrdenado;
+    pVetor = malloc(size * sizeof(int));
 
     for(i = 0; i < size; i++) {
         number = rand()%10000;
-        vet[i] = number;
+        pVetor[i] = number;
     }
 
     do{
@@ -30,32 +35,46 @@ int main () {
         
         switch(selection){
             case 1: 
-                Insertionsort(vet, size);
-                Printa(vet, size);
-                verifica(vet, size);
+                pVetorOrdenado = copia(pVetor, size);
+                insertionSort(pVetorOrdenado, size);
+                printa(pVetorOrdenado, size);
+                verifica(pVetorOrdenado, size);
+                free(pVetorOrdenado);
                 break;
+
            case 2:
-                Selectsort(vet, size);
-                Printa(vet, size);
-                verifica(vet, size);
+                pVetorOrdenado = copia(pVetor, size);
+                selectSort(pVetorOrdenado, size);
+                printa(pVetorOrdenado, size);
+                verifica(pVetorOrdenado, size);
+                free(pVetorOrdenado);
                 break;
+
             case 3:
-                Quicksort(vet, 0, size);
-                Printa(vet, size);
-                verifica(vet, size);
+                pVetorOrdenado = copia(pVetor, size);
+                quickSort(pVetorOrdenado, 0, size - 1);
+                printa(pVetorOrdenado, size);
+                verifica(pVetorOrdenado, size);
+                free(pVetorOrdenado);
                 break;
+
             case 4:
-                
+                pVetorOrdenado = copia(pVetor, size);
+                mergeSort(pVetorOrdenado, 0, size - 1);
+                printa(pVetorOrdenado, size);
+                verifica(pVetorOrdenado, size);
+                free(pVetorOrdenado);
                 break;
+
             case 5:
-                
+                free(pVetor);
                 break;
         }
     }  while(selection != 5); 
 
     return 0;
 }
-void Insertionsort (int data[], int size) {
+void insertionSort (int *data, int size) {
 
     for(int i = 0; i < size; i++) {
         int j = i;
@@ -68,7 +87,7 @@ void Insertionsort (int data[], int size) {
     }   
 }
 
-void Selectsort (int data[], int n) {
+void selectSort (int *data, int n) {
 
     int min, tmp, i, j, min_id;
 
@@ -88,7 +107,7 @@ void Selectsort (int data[], int n) {
     }
 }
 
-void Quicksort (int data[], int left, int right) {
+void quickSort (int *data, int left, int right) {
 
     int mid, tmp, i, j;
     i = left;
@@ -114,15 +133,63 @@ void Quicksort (int data[], int left, int right) {
     } while (i <= j);
 
     if(left < j) 
-        Quicksort(data, left, j);
+        quickSort(data, left, j);
     
     if(i < right) 
-        Quicksort(data, i, right);
+        quickSort(data, i, right);
     
-
 }  
 
-void Printa(int data[], int size) {
+void mergeSort (int *data, int inicio, int fim) {
+
+    int meio;
+    if(inicio < fim) {
+        meio = floor((inicio+fim)/2);
+        mergeSort(data, inicio, meio);
+        mergeSort(data, meio + 1, fim);
+        merge(data, inicio, meio, fim);
+    }
+}
+
+void merge(int *data, int inicio, int meio, int fim) {
+
+    int *temp, p1, p2, tamanho, i, j, k;
+    int fim1 = 0, fim2 = 0;
+
+    tamanho = fim - inicio + 1;
+    p1 = inicio;
+    p2 = meio + 1;
+    temp = malloc(tamanho * sizeof(int));
+
+    if(temp != NULL) {
+        for(i = 0; i < tamanho; i++) {
+            if(!fim1 && !fim2) {
+
+                if(data[p1] < data[p2])                     
+                    temp[i] = data[p1++];
+                else 
+                    temp[i] = data[p2++];
+                
+                if(p1 > meio)
+                    fim1 = 1;
+                if(p2 > fim)
+                    fim2 = 1;
+            }
+            else {
+                if(!fim1)
+                    temp[i] = data[p1++];
+                else 
+                    temp[i] = data[p2++];
+            }
+        }
+        for(j = 0, k = inicio; j < tamanho; j++, k++) {
+            data[k] = temp[j];
+        }
+    }
+    free(temp);
+}
+
+void printa(int *data, int size) {
 
     int i;
 
@@ -131,7 +198,7 @@ void Printa(int data[], int size) {
 
 }
 
-void verifica (int data[], int size) {
+void verifica (int *data, int size) {
 
     int count = 0;
     for(int i = 0; i < (size - 1); i++) {
@@ -144,3 +211,16 @@ void verifica (int data[], int size) {
         printf("O resultado esta incorreto\n");
 
 }
+
+int *copia(int *pVetor, int size) {
+
+    int i, *pVetorOrdenado;
+    pVetorOrdenado = malloc(size * sizeof(int));
+
+    for(i = 0; i < size; i++) {
+        pVetorOrdenado[i] = pVetor[i];
+    }
+
+    return pVetorOrdenado;
+}
+
