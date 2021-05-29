@@ -17,11 +17,12 @@ float time_diff(struct timeval *start, struct timeval *end);
 int main () {
 
     srand(time(NULL));
-    int selection, size, number, i; 
+    int selection, number, i; 
     struct timeval begin, end;
+    long int size;
 
     printf("Digite o tamanho do vetor: \n");
-    scanf("%d", &size);
+    scanf("%ld", &size);
     int *pVetor, *pVetorOrdenado;
     pVetor = malloc(size * sizeof(int));
 
@@ -44,7 +45,7 @@ int main () {
                 gettimeofday (&end, NULL);
                 printa(pVetorOrdenado, size);
                 verifica(pVetorOrdenado, size);
-                printf("tempo de execucao:: %0.8f sec\n", time_diff(&begin, &end));
+                printf("tempo de execucao: %0.8f sec\n", time_diff(&begin, &end));
                 free(pVetorOrdenado);
                 break;
 
@@ -55,7 +56,7 @@ int main () {
                 gettimeofday (&end, NULL);
                 printa(pVetorOrdenado, size);
                 verifica(pVetorOrdenado, size);
-                printf("tempo de execucao:: %0.8f sec\n", time_diff(&begin, &end));
+                printf("tempo de execucao: %0.8f sec\n", time_diff(&begin, &end));
                 free(pVetorOrdenado);
                 break;
 
@@ -66,7 +67,7 @@ int main () {
                 gettimeofday (&end, NULL);
                 printa(pVetorOrdenado, size);
                 verifica(pVetorOrdenado, size);
-                printf("tempo de execucao:: %0.8f sec\n", time_diff(&begin, &end));
+                printf("tempo de execucao: %0.8f sec\n", time_diff(&begin, &end));
                 free(pVetorOrdenado);
                 break;
 
@@ -77,7 +78,7 @@ int main () {
                 gettimeofday (&end, NULL);
                 printa(pVetorOrdenado, size);
                 verifica(pVetorOrdenado, size);
-                printf("tempo de execucao:: %0.8f sec\n", time_diff(&begin, &end));
+                printf("tempo de execucao: %0.8f sec\n", time_diff(&begin, &end));
                 free(pVetorOrdenado);
                 break;
 
